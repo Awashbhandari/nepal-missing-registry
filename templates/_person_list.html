@@ -1,0 +1,25 @@
+<ul class="person-list">
+  {% for p in people %}
+  <li class="person-row">
+    <a href="{{ url_for('person_detail', person_id=p.id) }}" class="person-link">
+      {% if p.photo_filename %}
+        <img class="person-thumb" src="{{ url_for('static', filename='uploads/' ~ p.photo_filename) }}" alt="">
+      {% else %}
+        <span class="person-thumb person-thumb-empty" aria-hidden="true">?</span>
+      {% endif %}
+      <span class="person-info">
+        <span class="person-name">{{ p.full_name }}</span>
+        <span class="person-meta">
+          {% if p.age %}Age {{ p.age }} &middot; {% endif %}{{ p.gender|capitalize if p.gender }}
+        </span>
+        <span class="person-meta">{{ p.full_address() or "Location not specified" }}</span>
+      </span>
+      <span class="person-status {% if p.status == 'missing' %}status-missing{% else %}status-found{% endif %}">
+        {% if p.status == 'missing' %}MISSING{% else %}FOUND SAFE{% endif %}
+      </span>
+    </a>
+  </li>
+  {% else %}
+  <li class="person-row-empty">No reports yet.</li>
+  {% endfor %}
+</ul>

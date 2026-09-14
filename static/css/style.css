@@ -1,0 +1,286 @@
+/* Plain, readable, mobile-first. No animations, no gradients, no shadows.
+   Only color used: red for MISSING, green for FOUND SAFE. Everything else
+   is black / white / gray. */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+a { color: #1a1a1a; }
+
+.site-header {
+  padding: 14px 16px;
+  border-bottom: 2px solid #1a1a1a;
+}
+.site-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Live counter bar */
+.counter-bar {
+  display: flex;
+  border-bottom: 2px solid #1a1a1a;
+}
+.counter-box {
+  flex: 1;
+  padding: 14px 8px;
+  text-align: center;
+  border-right: 1px solid #ccc;
+}
+.counter-box:last-child { border-right: none; }
+.counter-number {
+  display: block;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.counter-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Status colors - the ONLY colors in the interface */
+.status-missing { color: #b3261e; }
+.status-found   { color: #1e7a34; }
+
+/* Nav */
+.main-nav {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+}
+.nav-btn {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  border: 2px solid #1a1a1a;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+}
+.nav-btn-primary {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.content {
+  padding: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.page-heading {
+  font-size: 22px;
+  margin: 0 0 12px 0;
+}
+
+.form-help {
+  color: #444;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+/* Flash messages */
+.flash-list { list-style: none; padding: 0; margin: 0 0 16px 0; }
+.flash {
+  padding: 10px 12px;
+  border: 2px solid #1a1a1a;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.flash-error { border-color: #b3261e; }
+.flash-success { border-color: #1e7a34; }
+
+/* Forms */
+.report-form, .search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.report-form label {
+  font-weight: 700;
+  margin-top: 12px;
+  font-size: 15px;
+}
+.required { color: #b3261e; }
+
+.report-form input,
+.report-form select,
+.report-form textarea,
+.search-form input,
+.search-form select {
+  font-size: 17px;
+  padding: 12px 10px;
+  border: 2px solid #666;
+  background: #fff;
+  color: #1a1a1a;
+  width: 100%;
+  font-family: inherit;
+}
+
+.form-divider { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+
+.live-match-section {
+  margin-top: 12px;
+  padding: 10px;
+  border: 2px solid #1a1a1a;
+}
+.live-match-section .person-list { margin-top: 8px; }
+.live-match-section .person-row:last-child { border-bottom: none; }
+
+.btn-submit {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  padding: 14px;
+  background: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-secondary {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+}
+
+.search-form {
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.search-form button { margin-top: 8px; }
+
+.result-count { color: #444; font-size: 14px; margin: 4px 0 12px 0; }
+
+/* Person list - plain scrollable list, page-level scroll, no nested scrollbox */
+.person-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.person-row {
+  border-bottom: 1px solid #ccc;
+}
+.person-row-empty {
+  padding: 16px 0;
+  color: #666;
+}
+.person-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  text-decoration: none;
+  color: inherit;
+}
+.person-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border: 1px solid #999;
+  flex-shrink: 0;
+}
+.person-thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  color: #888;
+  font-size: 20px;
+}
+.person-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.person-name { font-weight: 700; font-size: 16px; }
+.person-meta {
+  font-size: 13px;
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.person-status {
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.list-footer { margin-top: 16px; text-align: center; }
+
+/* Detail page */
+.detail-photo {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border: 1px solid #999;
+  margin-bottom: 12px;
+}
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+.detail-table th, .detail-table td {
+  text-align: left;
+  padding: 8px 4px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+  font-size: 15px;
+}
+.detail-table th { width: 40%; color: #444; font-weight: 600; }
+
+/* Admin table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.admin-table th, .admin-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+.admin-table button {
+  padding: 6px 8px;
+  border: 1px solid #1a1a1a;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.site-footer {
+  padding: 16px;
+  border-top: 2px solid #1a1a1a;
+  color: #444;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 24px;
+}
+
+/* Small screens: ensure comfortable tap targets, no layout surprises */
+@media (max-width: 400px) {
+  html, body { font-size: 16px; }
+  .counter-number { font-size: 28px; }
+}

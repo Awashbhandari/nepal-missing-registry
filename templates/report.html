@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Report Missing Person{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Report a Missing Person</h1>
+<p class="form-help">Only Name and Gender are required. Fill in whatever else you know — every extra detail helps others recognize them.</p>
+
+<form method="post" enctype="multipart/form-data" class="report-form">
+
+  <label for="full_name">Full Name <span class="required">*</span></label>
+  <input type="text" id="full_name" name="full_name" class="match-field" autocomplete="off" required value="{{ form.full_name if form else '' }}">
+
+  <label for="gender">Gender <span class="required">*</span></label>
+  <select id="gender" name="gender" class="match-field" required>
+    <option value="">Select</option>
+    <option value="male" {% if form and form.gender == 'male' %}selected{% endif %}>Male</option>
+    <option value="female" {% if form and form.gender == 'female' %}selected{% endif %}>Female</option>
+    <option value="other" {% if form and form.gender == 'other' %}selected{% endif %}>Other</option>
+  </select>
+
+  <label for="age">Approximate Age</label>
+  <input type="number" id="age" name="age" min="0" max="120" value="{{ form.age if form else '' }}">
+
+  <label for="district">District</label>
+  <input type="text" id="district" name="district" class="match-field" autocomplete="off" placeholder="e.g. Sunsari" value="{{ form.district if form else '' }}">
+
+  <label for="municipality">Municipality / Rural Municipality</label>
+  <input type="text" id="municipality" name="municipality" class="match-field" autocomplete="off" placeholder="e.g. Itahari" value="{{ form.municipality if form else '' }}">
+
+  <label for="ward_no">Ward No.</label>
+  <input type="text" id="ward_no" name="ward_no" class="match-field" autocomplete="off" placeholder="e.g. 5" value="{{ form.ward_no if form else '' }}">
+
+  <label for="landmark">Nearest Landmark / Tole</label>
+  <input type="text" id="landmark" name="landmark" class="match-field" autocomplete="off" placeholder="e.g. Near Ram Mandir, Ganeshtole" value="{{ form.landmark if form else '' }}">
+
+  <div id="live-match-section" class="live-match-section" hidden>
+    <p class="form-help"><strong>Already reported people matching what you've typed so far</strong> — check these before continuing. The list narrows as you fill in more details.</p>
+    <ul class="person-list" id="live-match-list"></ul>
+  </div>
+
+  <label for="description">Description (clothing, marks, etc.)</label>
+  <textarea id="description" name="description" rows="3">{{ form.description if form else '' }}</textarea>
+
+  <label for="photo">Photo (optional, small file preferred)</label>
+  <input type="file" id="photo" name="photo" accept="image/*">
+
+  <hr class="form-divider">
+
+  <label for="reporter_name">Your Name</label>
+  <input type="text" id="reporter_name" name="reporter_name" value="{{ form.reporter_name if form else '' }}">
+
+  <label for="reporter_relation">Relation to Missing Person</label>
+  <input type="text" id="reporter_relation" name="reporter_relation" placeholder="e.g. Brother, Neighbor" value="{{ form.reporter_relation if form else '' }}">
+
+  <label for="reporter_phone">Your Contact Number</label>
+  <input type="tel" id="reporter_phone" name="reporter_phone" value="{{ form.reporter_phone if form else '' }}">
+
+  <button type="submit" class="btn-submit">Submit Report</button>
+</form>
+
+{% endblock %}

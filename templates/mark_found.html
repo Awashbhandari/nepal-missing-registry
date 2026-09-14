@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Mark {{ person.full_name }} as Found Safe{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Mark "{{ person.full_name }}" as Found Safe</h1>
+<p class="form-help">Please only do this if you have directly confirmed the person is safe. Your name and phone will be recorded for accountability.</p>
+
+<form method="post" class="report-form">
+  <label for="confirmer_name">Your Name <span class="required">*</span></label>
+  <input type="text" id="confirmer_name" name="confirmer_name" required>
+
+  <label for="confirmer_phone">Your Phone Number <span class="required">*</span></label>
+  <input type="tel" id="confirmer_phone" name="confirmer_phone" required>
+
+  <label for="note">Note (where/how found, optional)</label>
+  <textarea id="note" name="note" rows="3"></textarea>
+
+  <button type="submit" class="btn-submit">Confirm Found Safe</button>
+</form>
+
+<p><a href="{{ url_for('person_detail', person_id=person.id) }}">&larr; Cancel</a></p>
+
+{% endblock %}

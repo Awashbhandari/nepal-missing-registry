@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Search Missing Persons{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Search</h1>
+
+<form method="get" class="search-form">
+  <input type="text" name="q" placeholder="Name, tole, or municipality" value="{{ q }}">
+  <input type="text" name="district" placeholder="District" value="{{ district }}">
+  <select name="status">
+    <option value="">All</option>
+    <option value="missing" {% if status_filter == 'missing' %}selected{% endif %}>Missing only</option>
+    <option value="found_safe" {% if status_filter == 'found_safe' %}selected{% endif %}>Found safe only</option>
+  </select>
+  <button type="submit" class="btn-submit">Search</button>
+</form>
+
+<p class="result-count">{{ total }} result(s)</p>
+
+{% include "_person_list.html" %}
+
+{% if has_more %}
+<p class="list-footer">
+  <a class="nav-btn" href="{{ url_for('search', q=q, district=district, status=status_filter, page=page+1) }}">Load more</a>
+</p>
+{% endif %}
+
+{% endblock %}

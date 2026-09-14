@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Missing Persons Registry - Home{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Recent Reports</h1>
+
+{% include "_person_list.html" %}
+
+<p class="list-footer"><a href="{{ url_for('search') }}">See all reports &rarr;</a></p>
+
+{% endblock %}

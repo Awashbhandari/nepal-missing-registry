@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}Nepal Missing Persons Registry{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="{{ url_for('home') }}" class="site-title">Missing Persons Registry</a>
+  </header>
+
+  <div class="counter-bar" id="counter-bar">
+    <div class="counter-box">
+      <span class="counter-number" id="missing-count">{{ missing_count if missing_count is defined else '—' }}</span>
+      <span class="counter-label status-missing">MISSING</span>
+    </div>
+    <div class="counter-box">
+      <span class="counter-number" id="found-count">{{ found_count if found_count is defined else '—' }}</span>
+      <span class="counter-label status-found">FOUND SAFE</span>
+    </div>
+  </div>
+
+  <nav class="main-nav">
+    <a href="{{ url_for('report') }}" class="nav-btn nav-btn-primary">Report Missing Person</a>
+    <a href="{{ url_for('search') }}" class="nav-btn">Search</a>
+  </nav>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list">
+        {% for category, message in messages %}
+          <li class="flash flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Community-maintained emergency registry. Verify important information directly with local authorities where possible.</p>
+    <a href="{{ url_for('admin_login') }}">Admin</a>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

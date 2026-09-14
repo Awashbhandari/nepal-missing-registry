@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Admin Dashboard</h1>
+<p><a href="{{ url_for('admin_logout') }}">Log out</a></p>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Name</th><th>Status</th><th>Location</th><th>Reported</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in people %}
+    <tr>
+      <td><a href="{{ url_for('person_detail', person_id=p.id) }}">{{ p.full_name }}</a></td>
+      <td class="{% if p.status == 'missing' %}status-missing{% elif p.status == 'found_safe' %}status-found{% endif %}">{{ p.status }}</td>
+      <td>{{ p.full_address() }}</td>
+      <td>{{ p.created_at.strftime('%d %b %Y') }}</td>
+      <td>
+        {% if p.status != 'rejected' %}
+        <form method="post" action="{{ url_for('admin_reject', person_id=p.id) }}" style="display:inline">
+          <button type="submit">Reject/Hide</button>
+        </form>
+        {% else %}
+        <form method="post" action="{{ url_for('admin_restore', person_id=p.id) }}" style="display:inline">
+          <button type="submit">Restore</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

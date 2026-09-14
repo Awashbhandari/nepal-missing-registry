@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Possible Existing Reports Found{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Is This Already Reported?</h1>
+<p class="form-help">We found {{ duplicates|length }} existing report(s) that might be the same person. Please check before submitting a new one.</p>
+
+<ul class="person-list">
+  {% for d in duplicates %}
+  <li class="person-row">
+    <a href="{{ url_for('person_detail', person_id=d.id) }}" class="person-link" target="_blank">
+      {% if d.photo_filename %}
+        <img class="person-thumb" src="{{ url_for('static', filename='uploads/' ~ d.photo_filename) }}" alt="">
+      {% else %}
+        <span class="person-thumb person-thumb-empty" aria-hidden="true">?</span>
+      {% endif %}
+      <span class="person-info">
+        <span class="person-name">{{ d.full_name }}</span>
+        <span class="person-meta">{% if d.age %}Age {{ d.age }} &middot; {% endif %}{{ d.gender|capitalize }}</span>
+        <span class="person-meta">{{ d.full_address() or "Location not specified" }}</span>
+      </span>
+      <span class="person-status {% if d.status == 'missing' %}status-missing{% else %}status-found{% endif %}">
+        {% if d.status == 'missing' %}MISSING{% else %}FOUND SAFE{% endif %}
+      </span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<p class="form-help">If one of these is the same person, please open it above instead of creating a duplicate. If this is a different person, you can continue below.</p>
+
+<form method="post" action="{{ url_for('report') }}" enctype="multipart/form-data">
+  {% for key, value in form.items() %}
+    {% if key != 'photo' %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endif %}
+  {% endfor %}
+  <input type="hidden" name="confirmed_new" value="1">
+  <p class="form-help"><strong>Note:</strong> if you had selected a photo, please re-select it on the previous page after going back, since it isn't carried forward automatically.</p>
+  <button type="submit" class="btn-submit btn-secondary">This Is a Different Person — Submit New Report</button>
+</form>
+
+<p><a href="{{ url_for('report') }}">&larr; Go back and edit</a></p>
+
+{% endblock %}
