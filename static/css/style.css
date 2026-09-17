@@ -52,9 +52,10 @@ a { color: #1a1a1a; }
   margin-top: 2px;
 }
 
-/* Status colors - the ONLY colors in the interface */
+/* Status colors - the ONLY colors in the interface (identified stays neutral) */
 .status-missing { color: #b3261e; }
 .status-found   { color: #1e7a34; }
+.status-neutral { color: #1a1a1a; }
 
 /* Nav */
 .main-nav {
@@ -133,6 +134,22 @@ a { color: #1a1a1a; }
 }
 
 .form-divider { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+
+.section-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px 0;
+}
+.section-heading {
+  font-size: 18px;
+  margin: 20px 0 6px 0;
+}
+.dna-badge {
+  font-weight: 600;
+}
 
 .live-match-section {
   margin-top: 12px;

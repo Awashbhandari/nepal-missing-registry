@@ -19,8 +19,13 @@
         <span class="person-meta">{% if d.age %}Age {{ d.age }} &middot; {% endif %}{{ d.gender|capitalize }}</span>
         <span class="person-meta">{{ d.full_address() or "Location not specified" }}</span>
       </span>
-      <span class="person-status {% if d.status == 'missing' %}status-missing{% else %}status-found{% endif %}">
-        {% if d.status == 'missing' %}MISSING{% else %}FOUND SAFE{% endif %}
+      <span class="person-status
+        {%- if d.status == 'missing' %} status-missing
+        {%- elif d.status == 'found_safe' %} status-found
+        {%- else %} status-neutral{% endif %}">
+        {% if d.status == 'missing' %}MISSING
+        {%- elif d.status == 'found_safe' %}FOUND SAFE
+        {%- else %}IDENTIFIED{% endif %}
       </span>
     </a>
   </li>

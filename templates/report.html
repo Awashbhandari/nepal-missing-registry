@@ -21,22 +21,39 @@
   <label for="age">Approximate Age</label>
   <input type="number" id="age" name="age" min="0" max="120" value="{{ form.age if form else '' }}">
 
-  <label for="district">District</label>
-  <input type="text" id="district" name="district" class="match-field" autocomplete="off" placeholder="e.g. Sunsari" value="{{ form.district if form else '' }}">
+  <hr class="form-divider">
+  <p class="section-label">Where they were last seen (where they went missing)</p>
 
-  <label for="municipality">Municipality / Rural Municipality</label>
-  <input type="text" id="municipality" name="municipality" class="match-field" autocomplete="off" placeholder="e.g. Itahari" value="{{ form.municipality if form else '' }}">
+  <label for="last_seen_district">District</label>
+  <input type="text" id="last_seen_district" name="last_seen_district" class="match-field" autocomplete="off" placeholder="e.g. Sunsari" value="{{ form.last_seen_district if form else '' }}">
 
-  <label for="ward_no">Ward No.</label>
-  <input type="text" id="ward_no" name="ward_no" class="match-field" autocomplete="off" placeholder="e.g. 5" value="{{ form.ward_no if form else '' }}">
+  <label for="last_seen_municipality">Municipality / Rural Municipality</label>
+  <input type="text" id="last_seen_municipality" name="last_seen_municipality" class="match-field" autocomplete="off" placeholder="e.g. Itahari" value="{{ form.last_seen_municipality if form else '' }}">
 
-  <label for="landmark">Nearest Landmark / Tole</label>
-  <input type="text" id="landmark" name="landmark" class="match-field" autocomplete="off" placeholder="e.g. Near Ram Mandir, Ganeshtole" value="{{ form.landmark if form else '' }}">
+  <label for="last_seen_ward_no">Ward No.</label>
+  <input type="text" id="last_seen_ward_no" name="last_seen_ward_no" class="match-field" autocomplete="off" placeholder="e.g. 5" value="{{ form.last_seen_ward_no if form else '' }}">
+
+  <label for="last_seen_landmark">Nearest Landmark / Tole</label>
+  <input type="text" id="last_seen_landmark" name="last_seen_landmark" class="match-field" autocomplete="off" placeholder="e.g. Near Ram Mandir, Ganeshtole" value="{{ form.last_seen_landmark if form else '' }}">
 
   <div id="live-match-section" class="live-match-section" hidden>
     <p class="form-help"><strong>Already reported people matching what you've typed so far</strong> — check these before continuing. The list narrows as you fill in more details.</p>
     <ul class="person-list" id="live-match-list"></ul>
   </div>
+
+  <hr class="form-divider">
+  <p class="section-label">Their home address (may be different from where they went missing)</p>
+
+  <label for="home_district">Home District</label>
+  <input type="text" id="home_district" name="home_district" placeholder="e.g. Sunsari" value="{{ form.home_district if form else '' }}">
+
+  <label for="home_municipality">Home Municipality / Rural Municipality</label>
+  <input type="text" id="home_municipality" name="home_municipality" placeholder="e.g. Dharan" value="{{ form.home_municipality if form else '' }}">
+
+  <label for="home_ward_no">Home Ward No.</label>
+  <input type="text" id="home_ward_no" name="home_ward_no" placeholder="e.g. 2" value="{{ form.home_ward_no if form else '' }}">
+
+  <hr class="form-divider">
 
   <label for="description">Description (clothing, marks, etc.)</label>
   <textarea id="description" name="description" rows="3">{{ form.description if form else '' }}</textarea>
@@ -45,6 +62,7 @@
   <input type="file" id="photo" name="photo" accept="image/*">
 
   <hr class="form-divider">
+  <p class="section-label">Your details (the reporter)</p>
 
   <label for="reporter_name">Your Name</label>
   <input type="text" id="reporter_name" name="reporter_name" value="{{ form.reporter_name if form else '' }}">
@@ -54,6 +72,37 @@
 
   <label for="reporter_phone">Your Contact Number</label>
   <input type="tel" id="reporter_phone" name="reporter_phone" value="{{ form.reporter_phone if form else '' }}">
+
+  <hr class="form-divider">
+  <p class="section-label">DNA reference (optional — only if a lab test has already been done)</p>
+  <p class="form-help">
+    If a relative has already given a sample at a lab and received a report, you can attach it here.
+    This is a reference for the missing person, given by a relative — not the missing person's own sample.
+    Leave this section blank if no test has been done yet.
+  </p>
+
+  <label for="dna_sample_giver">Name of Person Who Gave the Sample</label>
+  <input type="text" id="dna_sample_giver" name="dna_sample_giver" value="{{ form.dna_sample_giver if form else '' }}">
+
+  <label for="dna_relationship">Their Relationship to the Missing Person</label>
+  <select id="dna_relationship" name="dna_relationship">
+    <option value="">Select</option>
+    {% for value, label in relationship_options %}
+    <option value="{{ value }}" {% if form and form.dna_relationship == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="dna_lab_name">Lab Name</label>
+  <input type="text" id="dna_lab_name" name="dna_lab_name" placeholder="e.g. Nepal Police Forensic Science Laboratory" value="{{ form.dna_lab_name if form else '' }}">
+
+  <label for="dna_report_ref">Lab Report / Reference Number</label>
+  <input type="text" id="dna_report_ref" name="dna_report_ref" value="{{ form.dna_report_ref if form else '' }}">
+
+  <label for="dna_test_date">Date Tested</label>
+  <input type="date" id="dna_test_date" name="dna_test_date" value="{{ form.dna_test_date if form else '' }}">
+
+  <label for="dna_report_file">Upload Lab Report (PDF or photo)</label>
+  <input type="file" id="dna_report_file" name="dna_report_file" accept=".pdf,image/*">
 
   <button type="submit" class="btn-submit">Submit Report</button>
 </form>

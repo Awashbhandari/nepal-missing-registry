@@ -6,17 +6,21 @@ LOCATION_MATCH_THRESHOLD = 65
 AGE_TOLERANCE = 4              # years
 
 
-def find_possible_duplicates(full_name, gender, age, district, municipality, ward_no, exclude_id=None):
+def find_possible_duplicates(full_name, gender, age, last_seen_district,
+                              last_seen_municipality, last_seen_ward_no, exclude_id=None):
     """
     Returns a list of MissingPerson records that could be the same person
     as the one being reported, ranked by similarity score.
 
     Required signal: name + gender must match (both are compulsory fields).
     Optional signals (only applied when data exists on both sides):
-    age proximity, district, municipality/ward/landmark similarity.
+    age proximity, last-seen district, last-seen municipality/ward/landmark
+    similarity.
 
-    District alone is far too broad after a large disaster, so ward/
-    municipality is weighted more heavily when available.
+    Matching is based on where the person was LAST SEEN (not their home
+    address), since that's what disambiguates two reports about the same
+    disaster event. District alone is far too broad after a large disaster,
+    so ward/municipality is weighted more heavily when available.
     """
     query = MissingPerson.query.filter(
         MissingPerson.status.in_(["missing", "found_safe"]),
@@ -44,13 +48,13 @@ def find_possible_duplicates(full_name, gender, age, district, municipality, war
                 continue
 
         # District check (only if both provided - district is optional)
-        if district and c.district:
-            if district.strip().lower() != c.district.strip().lower():
+        if last_seen_district and c.last_seen_district:
+            if last_seen_district.strip().lower() != c.last_seen_district.strip().lower():
                 continue
 
-        # Location similarity: compare municipality + ward + landmark text combined
-        loc_a = f"{municipality or ''} {ward_no or ''}".lower().strip()
-        loc_b = f"{c.municipality or ''} {c.ward_no or ''}".lower().strip()
+        # Location similarity: compare municipality + ward text combined
+        loc_a = f"{last_seen_municipality or ''} {last_seen_ward_no or ''}".lower().strip()
+        loc_b = f"{c.last_seen_municipality or ''} {c.last_seen_ward_no or ''}".lower().strip()
         loc_score = fuzz.partial_ratio(loc_a, loc_b) if loc_a and loc_b else 50
 
         if loc_a and loc_b and loc_score < LOCATION_MATCH_THRESHOLD:

@@ -15,7 +15,7 @@
     {% for p in people %}
     <tr>
       <td><a href="{{ url_for('person_detail', person_id=p.id) }}">{{ p.full_name }}</a></td>
-      <td class="{% if p.status == 'missing' %}status-missing{% elif p.status == 'found_safe' %}status-found{% endif %}">{{ p.status }}</td>
+      <td class="{% if p.status == 'missing' %}status-missing{% elif p.status == 'found_safe' %}status-found{% elif p.status == 'identified' %}status-neutral{% endif %}">{{ p.status }}</td>
       <td>{{ p.full_address() }}</td>
       <td>{{ p.created_at.strftime('%d %b %Y') }}</td>
       <td>

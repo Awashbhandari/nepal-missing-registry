@@ -13,9 +13,15 @@
           {% if p.age %}Age {{ p.age }} &middot; {% endif %}{{ p.gender|capitalize if p.gender }}
         </span>
         <span class="person-meta">{{ p.full_address() or "Location not specified" }}</span>
+        {% if p.has_dna_reference() %}<span class="person-meta dna-badge">DNA reference on file</span>{% endif %}
       </span>
-      <span class="person-status {% if p.status == 'missing' %}status-missing{% else %}status-found{% endif %}">
-        {% if p.status == 'missing' %}MISSING{% else %}FOUND SAFE{% endif %}
+      <span class="person-status
+        {%- if p.status == 'missing' %} status-missing
+        {%- elif p.status == 'found_safe' %} status-found
+        {%- else %} status-neutral{% endif %}">
+        {% if p.status == 'missing' %}MISSING
+        {%- elif p.status == 'found_safe' %}FOUND SAFE
+        {%- else %}IDENTIFIED{% endif %}
       </span>
     </a>
   </li>

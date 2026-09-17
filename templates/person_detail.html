@@ -8,14 +8,20 @@
   {% endif %}
 
   <h1 class="page-heading">{{ person.full_name }}</h1>
-  <p class="person-status {% if person.status == 'missing' %}status-missing{% else %}status-found{% endif %}">
-    {% if person.status == 'missing' %}MISSING{% else %}FOUND SAFE{% endif %}
+  <p class="person-status
+    {%- if person.status == 'missing' %} status-missing
+    {%- elif person.status == 'found_safe' %} status-found
+    {%- else %} status-neutral{% endif %}">
+    {% if person.status == 'missing' %}MISSING
+    {%- elif person.status == 'found_safe' %}FOUND SAFE
+    {%- else %}IDENTIFIED{% endif %}
   </p>
 
   <table class="detail-table">
     {% if person.age %}<tr><th>Age</th><td>{{ person.age }}</td></tr>{% endif %}
     <tr><th>Gender</th><td>{{ person.gender|capitalize }}</td></tr>
     {% if person.full_address() %}<tr><th>Last seen near</th><td>{{ person.full_address() }}</td></tr>{% endif %}
+    {% if person.home_address() %}<tr><th>Home address</th><td>{{ person.home_address() }}</td></tr>{% endif %}
     {% if person.description %}<tr><th>Description</th><td>{{ person.description }}</td></tr>{% endif %}
     {% if person.reporter_name %}<tr><th>Reported by</th><td>{{ person.reporter_name }}{% if person.reporter_relation %} ({{ person.reporter_relation }}){% endif %}</td></tr>{% endif %}
     {% if person.reporter_phone %}<tr><th>Contact</th><td>{{ person.reporter_phone }}</td></tr>{% endif %}
@@ -23,10 +29,38 @@
     {% if person.status == 'found_safe' and person.found_note %}
       <tr><th>Found safe note</th><td>{{ person.found_note }}</td></tr>
     {% endif %}
+    {% if person.status == 'identified' and person.identified_note %}
+      <tr><th>Identification note</th><td>{{ person.identified_note }}</td></tr>
+    {% endif %}
   </table>
+
+  {% if person.dna_references %}
+  <h2 class="section-heading">DNA Reference(s) on File</h2>
+  <p class="form-help">These are reference samples/reports from relatives, not the missing person's own sample. Provided to help a lab match against a recovered body's own DNA report.</p>
+  <table class="detail-table">
+    {% for ref in person.dna_references %}
+    <tr>
+      <th>{{ ref.sample_giver_name }}</th>
+      <td>
+        Relationship: {{ ref.relationship_to_missing|capitalize }}<br>
+        {% if ref.lab_name %}Lab: {{ ref.lab_name }}<br>{% endif %}
+        {% if ref.report_reference_no %}Reference No.: {{ ref.report_reference_no }}<br>{% endif %}
+        {% if ref.test_date %}Tested: {{ ref.test_date }}<br>{% endif %}
+        {% if ref.report_filename %}
+          <a href="{{ url_for('static', filename='uploads/dna_reports/' ~ ref.report_filename) }}" target="_blank">View uploaded lab report</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
 
   {% if person.status == 'missing' %}
     <a class="btn-submit" href="{{ url_for('mark_found', person_id=person.id) }}">Mark as Found Safe</a>
+  {% endif %}
+
+  {% if person.status in ('missing', 'found_safe') %}
+    <a class="btn-submit btn-secondary" href="{{ url_for('mark_identified', person_id=person.id) }}">Mark as Identified (Government/Forensic Use)</a>
   {% endif %}
 </div>
 

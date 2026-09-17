@@ -84,9 +84,16 @@
 
     var params = new URLSearchParams();
     params.set("full_name", name);
-    ["gender", "district", "municipality", "ward_no", "landmark"].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el && el.value.trim()) params.set(id, el.value.trim());
+    var fieldMap = {
+      gender: "gender",
+      last_seen_district: "district",
+      last_seen_municipality: "municipality",
+      last_seen_ward_no: "ward_no",
+      last_seen_landmark: "landmark"
+    };
+    Object.keys(fieldMap).forEach(function (elId) {
+      var el = document.getElementById(elId);
+      if (el && el.value.trim()) params.set(fieldMap[elId], el.value.trim());
     });
 
     fetch("/api/live-match?" + params.toString())

@@ -6,11 +6,17 @@
 
 <form method="get" class="search-form">
   <input type="text" name="q" placeholder="Name, tole, or municipality" value="{{ q }}">
-  <input type="text" name="district" placeholder="District" value="{{ district }}">
+  <input type="text" name="district" placeholder="District (last seen)" value="{{ district }}">
   <select name="status">
-    <option value="">All</option>
+    <option value="">All statuses</option>
     <option value="missing" {% if status_filter == 'missing' %}selected{% endif %}>Missing only</option>
     <option value="found_safe" {% if status_filter == 'found_safe' %}selected{% endif %}>Found safe only</option>
+    <option value="identified" {% if status_filter == 'identified' %}selected{% endif %}>Identified only</option>
+  </select>
+  <select name="dna">
+    <option value="">DNA reference: any</option>
+    <option value="has" {% if dna_filter == 'has' %}selected{% endif %}>Has DNA reference on file</option>
+    <option value="missing" {% if dna_filter == 'missing' %}selected{% endif %}>No DNA reference yet</option>
   </select>
   <button type="submit" class="btn-submit">Search</button>
 </form>
@@ -21,7 +27,7 @@
 
 {% if has_more %}
 <p class="list-footer">
-  <a class="nav-btn" href="{{ url_for('search', q=q, district=district, status=status_filter, page=page+1) }}">Load more</a>
+  <a class="nav-btn" href="{{ url_for('search', q=q, district=district, status=status_filter, dna=dna_filter, page=page+1) }}">Load more</a>
 </p>
 {% endif %}
 

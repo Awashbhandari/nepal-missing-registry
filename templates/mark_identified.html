@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Mark {{ person.full_name }} as Identified{% endblock %}
+{% block content %}
+
+<h1 class="page-heading">Mark "{{ person.full_name }}" as Identified</h1>
+<p class="form-help">
+  For use by government, police, or forensic/rescue teams only, after a recovered body has been
+  matched to this record through an actual DNA kinship comparison done at a lab.
+  This form only records that outcome — it does not perform any DNA comparison itself.
+</p>
+
+<form method="post" class="report-form">
+  <label for="official_name">Confirming Official's Name <span class="required">*</span></label>
+  <input type="text" id="official_name" name="official_name" required>
+
+  <label for="official_org">Organization <span class="required">*</span></label>
+  <input type="text" id="official_org" name="official_org" placeholder="e.g. Nepal Police, District Disaster Office" required>
+
+  <label for="lab_name">Lab That Performed the Comparison</label>
+  <input type="text" id="lab_name" name="lab_name">
+
+  <label for="note">Note (optional)</label>
+  <textarea id="note" name="note" rows="3"></textarea>
+
+  <button type="submit" class="btn-submit">Confirm Identified</button>
+</form>
+
+<p><a href="{{ url_for('person_detail', person_id=person.id) }}">&larr; Cancel</a></p>
+
+{% endblock %}
